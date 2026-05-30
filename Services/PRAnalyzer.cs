@@ -35,7 +35,7 @@ public class PRAnalyzer
         string? personalAccessToken = Environment.GetEnvironmentVariable("ADO_PAT");
         if (!string.IsNullOrEmpty(personalAccessToken))
         {
-            Console.WriteLine("[PAT] Using ADO_PAT environment variable");
+            Console.WriteLine($"[PAT] Using ADO_PAT environment variable (length: {personalAccessToken.Length}, first 5 chars: {personalAccessToken.Substring(0, Math.Min(5, personalAccessToken.Length))}...)");
             return personalAccessToken;
         }
 
@@ -51,7 +51,7 @@ public class PRAnalyzer
             throw new InvalidOperationException("ADO_PAT environment variable or appsettings.json AdoPat not set");
         }
 
-        Console.WriteLine("[PAT] Using AdoPat from appsettings.json");
+        Console.WriteLine($"[PAT] Using AdoPat from appsettings.json (length: {personalAccessToken.Length})");
         return personalAccessToken;
     }
 
