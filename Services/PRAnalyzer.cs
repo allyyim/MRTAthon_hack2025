@@ -33,20 +33,25 @@ public class PRAnalyzer
     private string LoadPersonalAccessToken()
     {
         string? personalAccessToken = Environment.GetEnvironmentVariable("ADO_PAT");
-        if (string.IsNullOrEmpty(personalAccessToken))
+        if (!string.IsNullOrEmpty(personalAccessToken))
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: true)
-                .Build();
-            personalAccessToken = config["AdoPat"];
+            Console.WriteLine("[PAT] Using ADO_PAT environment variable");
+            return personalAccessToken;
         }
+
+        Console.WriteLine("[PAT] ADO_PAT environment variable not found, checking appsettings.json");
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: true)
+            .Build();
+        personalAccessToken = config["AdoPat"];
 
         if (string.IsNullOrEmpty(personalAccessToken))
         {
             throw new InvalidOperationException("ADO_PAT environment variable or appsettings.json AdoPat not set");
         }
 
+        Console.WriteLine("[PAT] Using AdoPat from appsettings.json");
         return personalAccessToken;
     }
 
